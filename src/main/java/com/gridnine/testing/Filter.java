@@ -49,11 +49,12 @@ public class Filter {
         if (segments.size() <= 1) {
             return true;
         }
-        int hoursToWait = 0;
+        long totalTimeToWaitInSec = 0;
         for (int i = 0; i < (segments.size() - 1);) {
-            Duration hours = Duration.between(segments.get(i).getArrivalDate(), segments.get(++i).getDepartureDate());
-            hoursToWait += hours.toHoursPart();
+            Duration timeToWait = Duration.between(segments.get(i).getArrivalDate(), segments.get(++i).getDepartureDate());
+            totalTimeToWaitInSec += timeToWait.toSeconds();
         }
-        return hoursToWait <= 2;
+        int totalTimeToWaitInHours = (int) (totalTimeToWaitInSec / 3600);
+        return totalTimeToWaitInHours <= 2;
     }
 }
